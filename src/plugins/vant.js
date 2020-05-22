@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button, Pagination, Search, Toast, Grid, GridItem, Icon, Panel,Cell, CellGroup,Divider,Tabbar, TabbarItem,  } from 'vant'
+import { Button, Pagination, Search, Toast, Grid, GridItem, Icon, Panel,Cell, CellGroup,Divider,Tabbar, TabbarItem, Form,Picker,Field,Popup } from 'vant'
 
 Vue.use(Pagination)
 Vue.use(Button)
@@ -14,3 +14,7 @@ Vue.use(CellGroup)
 Vue.use(Divider)
 Vue.use(Tabbar)
 Vue.use(TabbarItem)
+Vue.use(Form)
+Vue.use(Picker)
+Vue.use(Field)
+Vue.use(Popup)
