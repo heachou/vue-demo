@@ -6,8 +6,10 @@
       <i class="el-icon-aim icon-text-after"></i>
     </div>
     <div class="right">
-      <i class="el-icon-office-building icon-build"></i>
-      <span class="text">城镇小区</span>
+      <slot name="right">
+        <i class="el-icon-office-building icon-build"></i>
+        <span class="text">城镇小区</span>
+      </slot>
     </div>
   </div>
 </template>
