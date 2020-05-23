@@ -34,58 +34,76 @@
         <van-cell title="系统消息" label="30个小区未绑定" value="20:58"></van-cell>
       </van-cell-group>
       <div class="grid-box" style="margin-top:4px">
-        <van-cell title="基础数据" label="截止2020-05-08 22:12:59" >
-          <slot><van-button type="primary" size="small">查看全部</van-button></slot>
+        <van-cell title="基础数据" label="截止2020-05-08 22:12:59">
+          <slot>
+            <van-button type="primary" size="small">查看全部</van-button>
+          </slot>
         </van-cell>
       </div>
       <van-grid :border="false">
         <van-grid-item>
           <slot name="icon">
-            <span class="num color-l1">1212</span>
+            <span class="num color-l1">{{basic.communityNum}}</span>
           </slot>
-          <slot name="text"><span class="grid-txt color-l1">小区数量</span></slot>
+          <slot name="text">
+            <span class="grid-txt color-l1">小区数量</span>
+          </slot>
         </van-grid-item>
         <van-grid-item>
           <slot name="icon">
-            <span class="num color-l2">1212</span>
+            <span class="num color-l2">{{basic.ownerHouseNum}}</span>
           </slot>
-          <slot name="text"><span class="grid-txt color-l2">自住房建</span></slot>
+          <slot name="text">
+            <span class="grid-txt color-l2">自住房建</span>
+          </slot>
         </van-grid-item>
         <van-grid-item>
           <slot name="icon">
-            <span class="num color-l3">1212</span>
+            <span class="num color-l3">{{basic.houseNum}}</span>
           </slot>
-          <slot name="text"><span class="grid-txt color-l3">房间数量</span></slot>
+          <slot name="text">
+            <span class="grid-txt color-l3">房间数量</span>
+          </slot>
         </van-grid-item>
         <van-grid-item>
           <slot name="icon">
-            <span class="num color-l4">1212</span>
+            <span class="num color-l4">{{basic.populationNum}}</span>
           </slot>
-          <slot name="text"><span class="grid-txt color-l4">实有人口</span></slot>
+          <slot name="text">
+            <span class="grid-txt color-l4">实有人口</span>
+          </slot>
         </van-grid-item>
         <van-grid-item>
           <slot name="icon">
             <span class="num color-l5">1212</span>
           </slot>
-          <slot name="text"><span class="grid-txt color-l5">流动人口</span></slot>
+          <slot name="text">
+            <span class="grid-txt color-l5">流动人口</span>
+          </slot>
         </van-grid-item>
         <van-grid-item>
           <slot name="icon">
-            <span class="num color-l6">1212</span>
+            <span class="num color-l6">{{basic.tenantHouseNum}}</span>
           </slot>
-          <slot name="text"><span class="grid-txt color-l6">出租房建</span></slot>
+          <slot name="text">
+            <span class="grid-txt color-l6">出租房间</span>
+          </slot>
         </van-grid-item>
         <van-grid-item>
           <slot name="icon">
             <span class="num color-l7">1212</span>
           </slot>
-          <slot name="text"><span class="grid-txt color-l7">户籍人口</span></slot>
+          <slot name="text">
+            <span class="grid-txt color-l7">户籍人口</span>
+          </slot>
         </van-grid-item>
         <van-grid-item>
           <slot name="icon">
-            <span class="num color-l8">1212</span>
+            <span class="num color-l8">{{basic.freeHouseNum}}</span>
           </slot>
-          <slot name="text"><span class="grid-txt color-l8">空置房建</span></slot>
+          <slot name="text">
+            <span class="grid-txt color-l8">空置房建</span>
+          </slot>
         </van-grid-item>
       </van-grid>
     </div>
@@ -94,29 +112,65 @@
 </template>
 
 <script>
-import { Header, Search,Tabbar } from "@/components"
+import { Header, Search, Tabbar } from "@/components";
+import { getQueryBasicInfo, queryFleetLevel } from "@/api/index";
+import { mapState } from "vuex";
+
 export default {
-  name: 'index',
+  name: "index",
+  data() {
+    return {
+      basic: {},
+      loading: false
+    };
+  },
+  computed: {
+    ...mapState(["user"])
+  },
+  watch:{
+    // user:{
+    //   deep: true,
+    // }
+  },
+  created() {
+  },
   methods: {
+    getQueryBasicInfo() {
+      const params = {
+        fleetId: this.user.FLEET_ID
+      };
+      this.loading = true;
+      getQueryBasicInfo(params).then(
+        res => {
+          this.loading = false;
+          this.basic = res.obj;
+        },
+        err => {
+          this.loading = false;
+          console.log(err);
+        }
+      );
+    },
     onSearch(val) {
-      this.$toast(val)
-    }
+      this.$toast(val);
+    },
+    
   },
   components: {
     topHeader: Header,
     Search,
     Tabbar
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
-.grid-header{
+.grid-header {
   padding: 16px 14px;
   position: relative;
   background: #fff;
-  .look-all{
-    position:absolute;
+  .look-all {
+    position: absolute;
     right: 0;
     top: -4px;
     width: 90px;
@@ -126,7 +180,7 @@ export default {
     display: inline-block;
   }
 }
-.index{
+.index {
   background: #e7ebee;
 }
 .grid-txt {

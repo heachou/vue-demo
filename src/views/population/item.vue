@@ -6,7 +6,10 @@
         <span class="left_text">身份证:</span>
         <span class="left_num">1234567890098765432</span>
       </div>
-      <div class="phone">电话：13112344321</div>
+      <div class="phone">
+        <span class="left_text">电话:</span>
+        <span class="left_num">13112344321</span>
+      </div>
     </div>
     <div class="right">
       <van-button size="small" type="primary" plain>修改</van-button>
@@ -24,14 +27,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  .status{
+  .status {
     text-align: right;
     margin-top: 12px;
+    font-size: 14px;
   }
-  .primary{
+  .primary {
     color: #07c160;
   }
-  .danger{
+  .danger {
     color: #ee0a24;
   }
   .left {

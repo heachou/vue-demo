@@ -23,7 +23,7 @@ export default {
 <style scoped lang="less">
 .header {
   height: 48px;
-  background: #33c8ee;
+  background: #2ac9f3;
   padding: 0 12px;
   display: flex;
   box-sizing: border-box;

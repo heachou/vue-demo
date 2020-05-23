@@ -1,5 +1,7 @@
 import Vue from 'vue'
-import { Button, Pagination, Search, Toast, Grid, GridItem, Icon, Panel,Cell, CellGroup,Divider,Tabbar, TabbarItem, Form,Picker,Field,Popup } from 'vant'
+import { Button, Pagination, Search, Toast, Grid, GridItem, Icon, Col, Row, Tab, Tabs,Image as VanImage,
+  Progress,Loading,Calendar,Uploader,List,Sticky,
+  Panel,Cell, CellGroup,Divider,Tabbar, TabbarItem, Form,Picker,Field,Popup } from 'vant'
 
 Vue.use(Pagination)
 Vue.use(Button)
@@ -18,3 +20,14 @@ Vue.use(Form)
 Vue.use(Picker)
 Vue.use(Field)
 Vue.use(Popup)
+Vue.use(Col)
+Vue.use(Row)
+Vue.use(Tab)
+Vue.use(Tabs)
+Vue.use(VanImage)
+Vue.use(Progress)
+Vue.use(Loading)
+Vue.use(Calendar)
+Vue.use(Uploader)
+Vue.use(List)
+Vue.use(Sticky)

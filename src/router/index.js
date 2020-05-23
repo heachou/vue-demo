@@ -6,6 +6,9 @@ const Population = () => import('../views/population/population')
 const City = () => import('../views/city/city')
 const Town = () => import('../views/town/town')
 const PopulationAdd = () => import('../views/population-add/population-add')
+const CommunityAdd = () => import("../views/community-add/community-add")
+const CityEdit = () => import("../views/city-edit/city-edit")
+const CityBind = () => import("../views/city-bind/city-bind")
 
 Vue.use(VueRouter)
 
@@ -29,6 +32,21 @@ const routes = [
     path: '/city',
     name: 'city',
     component: City
+  },
+  {
+    path: '/city-bind/:id',
+    name: 'city-bind',
+    component: CityBind
+  },
+  {
+    path: '/city-edit/:id',
+    name: 'city-edit',
+    component: CityEdit
+  },
+  {
+    path: '/community-add',
+    name: 'community-add',
+    component: CommunityAdd
   },
   {
     path: '/town',

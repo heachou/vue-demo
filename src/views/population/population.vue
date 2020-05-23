@@ -11,7 +11,7 @@
     <div class="main">
       <search @search="onSearch"></search>
       <van-divider :style="{ color: '#1989fa', padding: '0',margin:'0' }"></van-divider>
-      <Item v-for="n in 8"></Item>
+      <Item v-for="n in 8" :key="n"></Item>
       <add-icon @click="click"></add-icon>
     </div>
     <tabbar></tabbar>
