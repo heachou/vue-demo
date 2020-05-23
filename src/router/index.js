@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-const Index = () => import('../views/index/index.vue')
+const Index = () => import('../views/index/index')
 const Population = () => import('../views/population/population')
 const City = () => import('../views/city/city')
 const Town = () => import('../views/town/town')
