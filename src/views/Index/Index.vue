@@ -128,9 +128,11 @@ export default {
     ...mapState(["user"])
   },
   watch:{
-    // user:{
-    //   deep: true,
-    // }
+    user(to,from){
+      if(to.FLEET_ID){
+        this.getQueryBasicInfo()
+      }
+    }
   },
   created() {
   },

@@ -24,6 +24,18 @@ export function queryFleetLevel(params){
   return _axios.post(url,params)
 }
 
+// 添加小区
+export function insertCommunity(params){
+  const url = `scs/community/insertCommunity`
+  return _axios({
+    url,
+    method: 'POST',
+    data: params,
+    headers:{
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
 
 
 

@@ -8,7 +8,7 @@
 
       <item v-for="item in list" :key="item.id" :item="item" @clickBind="clickBind" @clickEdit="clickEdit"></item>
       <div class="pagniation-box">
-        <van-pagination v-model="form.currentPage" :total-items="total" :items-per-page="form.pageSize" mode="simple" @change="changePagination"/>
+        <van-pagination v-model="form.pageNum" :total-items="total" :items-per-page="form.pageSize" mode="simple" @change="changePagination"/>
       </div>
       <add-icon @click="click"></add-icon>
     </div>
@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       form: {
-        currentPage: 1,
+        pageNum: 1,
         pageSize: 10,
         pageNum: 1,
         communityName: ""
@@ -43,6 +43,7 @@ export default {
   },
   methods: {
     changePagination(index){
+      // this.form.pageNum = index
       this.getCommunityList()
     },
     getCommunityList() {
@@ -65,7 +66,7 @@ export default {
       this.form.pageNum = 1
       this.getCommunityList()
     },
-    clickBind() {
+    clickBind(item) {
       this.$router.push("/city-bind/1");
     },
     clickEdit() {

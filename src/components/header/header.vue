@@ -1,13 +1,14 @@
 <template>
   <div class="header">
     <div class="left">
-      <i class="el-icon-arrow-left icon-left"></i>
-      <span class="text">某某社区第二网格</span>
+      <van-icon name="arrow-left" class="icon-left" />
+      <span class="text">{{headerText.replace("中国","")}}</span>
       <i class="el-icon-aim icon-text-after"></i>
     </div>
     <div class="right">
       <slot name="right">
-        <i class="el-icon-office-building icon-build"></i>
+        <i class="el-icon-office-building "></i>
+        <van-icon name="home-o" class="icon-build"></van-icon>
         <span class="text">城镇小区</span>
       </slot>
     </div>
@@ -15,8 +16,12 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
-  name: 'top-header'
+  name: 'top-header',
+  computed:{
+    ...mapState(["headerText"])
+  }
 }
 </script>
 

@@ -20,20 +20,26 @@ export default {
     
     // this.getDetailInfo();
   },
+  watch:{
+    '$route'(to,from){
+      if(to.query.number){
+        this.getDetailInfo(to.query.number)
+      }
+    }
+  },
   mounted(){
-    setTimeout(()=>{
-console.log(this.$route.query)
-
-    },20)
+  },
+  computed: {
+    ...mapState(["user"])
   },
   components: {},
   methods: {
-    getDetailInfo() {
-      if (!this.number) {
+    getDetailInfo(number) {
+      if (!number) {
         return this.$toast.fail("未获取到number");
       }
       const params = {
-        number: this.number
+        number
       };
       getDetailInfo(params).then(
         res => {
@@ -56,7 +62,6 @@ console.log(this.$route.query)
           if (_index > -1) {
             let fleetName = list[_index].FleetNum;
             let _arr = fleetName.split("-");
-            console.log(_arr);
             let _str = "";
             for (let i = 0; i < _arr.length; i++) {
               let item = list.filter(
@@ -66,6 +71,7 @@ console.log(this.$route.query)
                 _str += item.NAME;
               }
             }
+            this.setHeaderText(_str)
           }
         },
         err => {
@@ -73,7 +79,7 @@ console.log(this.$route.query)
         }
       );
     },
-    ...mapMutations(["setUser"])
+    ...mapMutations(["setUser",'setHeaderText'])
   }
 };
 </script>

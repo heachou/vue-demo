@@ -3,16 +3,10 @@
     <top-header></top-header>
     <div class="main">
       <van-tabs v-model="active" color="#2ac9f3">
-        <van-tab title="小区绑定">
+        <van-tab title="绑定房屋">
           <div>
             <form-add @add="add"></form-add>
           </div>
-        </van-tab>
-        <van-tab title="小区详情">
-          <community-detail></community-detail>
-        </van-tab>
-        <van-tab title="楼栋信息">
-          <build-detail></build-detail>
         </van-tab>
         <van-tab title="实有人口">实有人口</van-tab>
       </van-tabs>
@@ -23,26 +17,21 @@
 <script>
 import { Header } from "@/components"
 import FormAdd from './form-add'
-import CommunityDetail from './community-detail'
-import BuildDetail from './build-detail'
-
 export default {
   name: "city-bind",
   data(){
     return {
-      active: 0
+      active: 2
     }
   },
   methods:{
     add(){
-      
+      this.$router.push('/people-add')
     }
   },
   components: {
     topHeader: Header,
-    FormAdd,
-    CommunityDetail,
-    BuildDetail
+    FormAdd
   }
 };
 </script>

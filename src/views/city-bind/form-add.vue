@@ -2,72 +2,43 @@
   <div class="form-bg">
     <van-form @submit="onSubmit">
       <van-field
-        v-model="form.username"
-        name="所属区域"
+        v-model="form.fleetNum"
+        name="fleetNum"
         label="所属区域"
         placeholder="请选择所属区域"
         :rules="[{ required: true, message: '请选择所属区域' }]"
       />
       <van-field
-        v-model="form.username"
-        name="居住地址"
-        label="居住地址"
-        placeholder="请选择居住地址"
-        :rules="[{ required: true, message: '请选择居住地址' }]"
+        v-model="form.communityName"
+        name="communityName"
+        label="小区名称"
+        placeholder="请选择小区名称"
+        :rules="[{ required: true, message: '请选输入小区名称' }]"
       />
-      <h2 class="block__title">人员信息</h2>
-      <div class="grid-box">
-        <van-grid :border="false" :column-num="3" :gutter="0">
-          <van-grid-item>
-            <van-image src="https://img.yzcdn.cn/vant/apple-1.jpg" class="border" />
-            <div class="name">姓名</div>
-            <div class="type">租住</div>
-          </van-grid-item>
-          <van-grid-item>
-            <van-image src="https://img.yzcdn.cn/vant/apple-2.jpg" class="border" />
-            <div class="name">姓名</div>
-            <div class="type">租住</div>
-          </van-grid-item>
-          <van-grid-item>
-            <van-image src="https://img.yzcdn.cn/vant/apple-3.jpg" class="border" />
-            <div style="margin-top: 14px">
-              <van-button plain type="primary" size="small" native-type="button" @click="new_add">新增</van-button>
-            </div>
-          </van-grid-item>
-        </van-grid>
-        <div style="padding: 0 12px;">
-          <van-progress :percentage="50" stroke-width="10" />
-        </div>
-        <h2 class="block__title">房间信息</h2>
-        <van-field
-          v-model="form.username"
-          name="房屋类型"
-          label="房屋类型"
-          placeholder="请选择房屋类型"
-          :rules="[{ required: true, message: '请选择房屋类型' }]"
-        />
-        <van-field
-          v-model="form.username"
-          name="房屋姓名"
-          label="房屋姓名"
-          placeholder="请选择房屋姓名"
-          :rules="[{ required: true, message: '请选择房屋姓名' }]"
-        />
-        <van-field
-          v-model="form.username"
-          name="房屋身份证"
-          label="房屋身份证"
-          placeholder="请选择房屋身份证"
-          :rules="[{ required: true, message: '请选择房屋身份证' }]"
-        />
-        <van-field
-          v-model="form.username"
-          name="房屋联系方式"
-          label="房屋联系方式"
-          placeholder="请选择房屋联系方式"
-          :rules="[{ required: true, message: '请选择房屋联系方式' }]"
-        />
-      </div>
+      <van-field
+        readonly
+        clickable
+        name="calendar"
+        v-model="form.calendar"
+        label="修建时间"
+        placeholder="点击选择修建时间"
+        @click="showCalendar = true"
+      />
+      <van-field name="file" label="小区照片">
+        <template #input>
+          <van-uploader v-model="form.file" :after-read="afterRead" @delete="deleteFile" />
+        </template>
+      </van-field>
+      <van-field
+        readonly
+        clickable
+        v-model="form.address"
+        label="绑定地址"
+        placeholder="点击选择地址"
+        @click="showPop = true"
+      />
+      <h2 class="title-block">绑定地图</h2>
+      <div id="map"></div>
       <div style="margin: 30px 16px;">
         <van-row gutter="20">
           <van-col span="12">
@@ -79,55 +50,175 @@
         </van-row>
       </div>
     </van-form>
+    <van-calendar v-model="showCalendar" @confirm="onConfirm" />
+    <van-popup closeable v-model="showPop" position="bottom" :style="{ height: '80%' }">
+      <div class="pop-box">
+        <h3 class="title">温馨提示:</h3>
+        <div class="tips">
+          <p>1、支持模糊搜索，关键字搜索；</p>
+          <p>
+            2、如果搜不到或无法确定你想要录入的地址，请通过民警公示中联系社区民警协助处理！
+            （课点击下载名单查询所在社区负责人电话或联系户政大队谢警官：13688057073）【管理员名单！】
+          </p>
+        </div>
+        <div>
+          <van-search v-model="keyword" placeholder="青羊区" @search="search" />
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+            :immediate-check="false"
+          >
+            <van-cell
+              v-for="item in list"
+              :key="item.dmid"
+              :title="item.dmmc"
+              @click="selectThis(item)"
+            />
+          </van-list>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
 <script>
+import { queryDoorAddress } from "@/api/index";
+import { mapState } from "vuex";
 export default {
   name: "form-add",
   data() {
     return {
-      form: {}
+      form: {},
+      showCalendar: false,
+      showPop: false,
+      keyword: "",
+      list: [],
+      loading: false,
+      finished: false,
+      pageNum: 1,
+      pageSize: 10,
+      files: []
     };
   },
+  computed: {
+    ...mapState(["user"])
+  },
+  mounted() {
+    this.location();
+  },
   methods: {
-    new_add() {
-      this.$emit("add")
+    location() {
+      var map = new BMap.Map("map");
+      var point = new BMap.Point(116.331398, 39.897445);
+      map.centerAndZoom(point, 12);
+      var geolocation = new BMap.Geolocation();
+      geolocation.getCurrentPosition(
+        function(r) {
+          if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+            var mk = new BMap.Marker(r.point);
+            map.addOverlay(mk);
+            map.panTo(r.point);
+          } else {
+            console.log("failed" + this.getStatus());
+          }
+        },
+        { enableHighAccuracy: true }
+      );
     },
-    onSubmit() {},
+    afterRead(file) {
+      this.files.push(file.file);
+    },
+    deleteFile(file, { index }) {
+      this.files.splice(index, 1);
+    },
+    selectThis(item) {
+      this.form.address = item.dmmc;
+      this.form.addressId = item.dmid;
+      this.showPop = false;
+    },
+    search(text) {
+      this.finished = false;
+      this.loading = false;
+      this.list = [];
+      this.pageNum = 1;
+      this.onLoad();
+    },
+    onConfirm(date) {
+      this.form.calendar = `${date.getFullYear()}-${date.getMonth() +
+        1}-${date.getDate()}`;
+      this.showCalendar = false;
+    },
+    onSubmit(form) {
+      let formData = new FormData();
+      for (let i = 0; i < this.files.length; i++) {
+        formData.append("photourl", this.files[i]);
+      }
+      const { file, fleetNum, ...rest } = this.form;
+      for (let key in rest) {
+        formData.append(key, rest[key]);
+      }
+
+      formData.append("fleetNum", "00-001");
+      formData.append("levelName", "安谱");
+      formData.append("fleetId", this.user.FLEET_ID);
+      this.$emit("submit", formData);
+    },
+    onLoad() {
+      const params = {
+        word: this.keyword
+      };
+      queryDoorAddress(params).then(res => {
+        try {
+          this.list = res.obj.list.data.records || [];
+        } catch (error) {
+          this.list = [];
+        }
+        this.loading = false;
+        this.finished = true;
+      });
+    }
   }
 };
 </script>
 
 <style scoped lang="less">
-.form-bg{
+#map {
+  width: 100%;
+  height: 300px;
+}
+.form-bg {
   background: #fff;
   padding-bottom: 20px;
-}
-.grid-box {
-  background: #fff;
-  padding-bottom: 10px;
-  .border {
-    border: 1px solid #ebedf0;
+  .pop-box {
+    padding: 16px 20px;
+    .tips {
+      margin-top: 20px;
+      font-size: 14px;
+      line-height: 24px;
+      letter-spacing: 0px;
+      color: #666666;
+      p {
+        margin-bottom: 0;
+      }
+    }
   }
-}
-.name {
-  font-size: 14px;
-  color: #333333;
-  margin-top: 15px;
-}
-.type {
-  font-size: 14px;
-  color: #999999;
-  margin-top: 7px;
-}
-.block__title {
-  margin: 0;
-  padding: 20px 16px 4px;
-  color: rgba(69, 90, 100, 0.6);
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 16px;
-  background: #fff;
+  .pop-box /deep/ .van-search {
+    padding: 10px 0;
+  }
+  .title {
+    font-size: 18px;
+    font-stretch: normal;
+    letter-spacing: 0px;
+    color: #2ac9f3;
+  }
+  .title-block {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(51, 51, 51, 1);
+    line-height: 48px;
+    padding-left: 14px;
+  }
 }
 </style>

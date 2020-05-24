@@ -3,14 +3,14 @@
     <van-form @submit="onSubmit">
       <van-field
         v-model="form.fleetNum"
-        name="所属区域"
+        name="fleetNum"
         label="所属区域"
         placeholder="请选择所属区域"
         :rules="[{ required: true, message: '请选择所属区域' }]"
       />
       <van-field
         v-model="form.communityName"
-        name="小区名称"
+        name="communityName"
         label="小区名称"
         placeholder="请选择小区名称"
         :rules="[{ required: true, message: '请选输入小区名称' }]"
@@ -26,7 +26,7 @@
       />
       <van-field name="file" label="小区照片">
         <template #input>
-          <van-uploader v-model="form.file" />
+          <van-uploader v-model="form.file" :after-read="afterRead" @delete="deleteFile" />
         </template>
       </van-field>
       <van-field
@@ -60,9 +60,20 @@
           </p>
         </div>
         <div>
-          <van-search v-model="keyword" placeholder="青羊区" @search="search"/>
-          <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :immediate-check="false">
-            <van-cell v-for="item in list" :key="item.dmid" :title="item.dmmc" @click="selectThis(item)"/>
+          <van-search v-model="keyword" placeholder="青羊区" @search="search" />
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+            :immediate-check="false"
+          >
+            <van-cell
+              v-for="item in list"
+              :key="item.dmid"
+              :title="item.dmmc"
+              @click="selectThis(item)"
+            />
           </van-list>
         </div>
       </div>
@@ -71,7 +82,8 @@
 </template>
 
 <script>
-import {queryDoorAddress} from '@/api/index'
+import { queryDoorAddress } from "@/api/index";
+import {mapState} from "vuex"
 export default {
   name: "form-add",
   data() {
@@ -84,21 +96,31 @@ export default {
       loading: false,
       finished: false,
       pageNum: 1,
-      pageSize: 10
-    }
+      pageSize: 10,
+      files: []
+    };
+  },
+  computed:{
+    ...mapState(["user"])
   },
   methods: {
-    selectThis(item){
-      this.form.address = item.dmmc
-      this.form.addressId = item.dmid
-      this.showPop = false
+    afterRead(file) {
+      this.files.push(file.file);
     },
-    search(text){
-      this.finished = false
-      this.loading = false
-      this.list = []
-      this.pageNum = 1
-      this.onLoad()
+    deleteFile(file, { index }) {
+      this.files.splice(index, 1);
+    },
+    selectThis(item) {
+      this.form.address = item.dmmc;
+      this.form.addressId = item.dmid;
+      this.showPop = false;
+    },
+    search(text) {
+      this.finished = false;
+      this.loading = false;
+      this.list = [];
+      this.pageNum = 1;
+      this.onLoad();
     },
     onConfirm(date) {
       this.form.calendar = `${date.getFullYear()}-${date.getMonth() +
@@ -106,21 +128,33 @@ export default {
       this.showCalendar = false;
     },
     onSubmit(form) {
-      this.$emit('submit',form)
+      let formData = new FormData();
+      for (let i = 0; i < this.files.length; i++) {
+        formData.append("file", this.files[i]);
+      }
+      const { file,fleetNum, ...rest } = this.form;
+      for (let key in rest) {
+        formData.append(key, rest[key]);
+      }
+      
+      formData.append("fleetNum", "00-001");
+      formData.append("levelName", "安谱");
+      formData.append("fleetId", this.user.FLEET_ID);
+      this.$emit("submit", formData);
     },
     onLoad() {
       const params = {
         word: this.keyword
-      }
-      queryDoorAddress(params).then(res=>{
+      };
+      queryDoorAddress(params).then(res => {
         try {
-          this.list = res.obj.list.data.records || []
+          this.list = res.obj.list.data.records || [];
         } catch (error) {
-          this.list = []
+          this.list = [];
         }
-        this.loading = false
-        this.finished = true
-      })
+        this.loading = false;
+        this.finished = true;
+      });
     }
   }
 };
@@ -138,7 +172,7 @@ export default {
       line-height: 24px;
       letter-spacing: 0px;
       color: #666666;
-      p{
+      p {
         margin-bottom: 0;
       }
     }

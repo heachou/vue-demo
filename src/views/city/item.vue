@@ -46,11 +46,11 @@ export default {
     }
   },
   methods: {
-    clickBind(val) {
-      this.$emit('clickBind',item)
+    clickBind() {
+      this.$emit('clickBind',this.item)
     },
     clickEdit(){
-      this.$emit('clickEdit',item)
+      this.$emit('clickEdit',this.item)
     }
   },
 };
