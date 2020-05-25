@@ -68,7 +68,7 @@ export default {
     clickBind(item) {
       this.$router.push(`/city-bind/${item.id}`);
     },
-    clickEdit() {
+    clickEdit(item) {
       this.$router.push(`/city-edit/${item.id}`);
     },
     click() {

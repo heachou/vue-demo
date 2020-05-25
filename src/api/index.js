@@ -43,6 +43,10 @@ export function selectHouseByCommunity(params){
   return _axios.post(url,params)
 }
 
-
+//  查询小区里面的人口
+export function queryCommunityPopulation(params){
+  const url = `scs/community/queryCommunityPopulation`
+  return _axios.post(url,params)
+}
 
 

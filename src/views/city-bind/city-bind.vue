@@ -14,7 +14,9 @@
         <van-tab title="楼栋信息">
           <build-detail></build-detail>
         </van-tab>
-        <van-tab title="实有人口">实有人口</van-tab>
+        <van-tab title="实有人口">
+          <community-person></community-person>
+        </van-tab>
       </van-tabs>
     </div>
   </div>
@@ -25,6 +27,7 @@ import { Header } from "@/components"
 import FormAdd from './form-add'
 import CommunityDetail from './community-detail'
 import BuildDetail from './build-detail'
+import CommunityPerson from './community-person'
 
 export default {
   name: "city-bind",
@@ -42,7 +45,8 @@ export default {
     topHeader: Header,
     FormAdd,
     CommunityDetail,
-    BuildDetail
+    BuildDetail,
+    CommunityPerson
   }
 };
 </script>

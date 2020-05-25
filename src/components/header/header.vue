@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <div class="left">
+    <div class="left" @click="clickLeft">
       <van-icon name="arrow-left" class="icon-left" />
       <span class="text">{{headerText.replace("中国","")}}</span>
       <i class="el-icon-aim icon-text-after"></i>
@@ -21,6 +21,11 @@ export default {
   name: 'top-header',
   computed:{
     ...mapState(["headerText"])
+  },
+  methods:{
+    clickLeft(){
+      this.$router.go(-1)
+    }
   }
 }
 </script>
