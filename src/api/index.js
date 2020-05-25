@@ -37,6 +37,12 @@ export function insertCommunity(params){
   })
 }
 
+// 根据小区查询房屋
+export function selectHouseByCommunity(params){
+  const url = `scs/house/selectHouseByCommunity`
+  return _axios.post(url,params)
+}
+
 
 
 

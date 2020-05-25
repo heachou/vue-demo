@@ -43,7 +43,6 @@ export default {
   },
   methods: {
     changePagination(index){
-      // this.form.pageNum = index
       this.getCommunityList()
     },
     getCommunityList() {
@@ -67,10 +66,10 @@ export default {
       this.getCommunityList()
     },
     clickBind(item) {
-      this.$router.push("/city-bind/1");
+      this.$router.push(`/city-bind/${item.id}`);
     },
     clickEdit() {
-      this.$router.push("/city-edit/1");
+      this.$router.push(`/city-edit/${item.id}`);
     },
     click() {
       this.$router.push("/community-add");
