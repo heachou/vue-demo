@@ -18,26 +18,18 @@
       <h2 class="block__title">人员信息</h2>
       <div class="grid-box">
         <van-grid :border="false" :column-num="3" :gutter="0">
-          <van-grid-item>
-            <van-image src="https://img.yzcdn.cn/vant/apple-1.jpg" class="border" />
+          <van-grid-item v-for="img in 5" :key="img">
+            <van-image src="https://img.yzcdn.cn/vant/apple-1.jpg" class="border" @click="imageClick(img)"/>
             <div class="name">姓名</div>
             <div class="type">租住</div>
           </van-grid-item>
           <van-grid-item>
-            <van-image src="https://img.yzcdn.cn/vant/apple-2.jpg" class="border" />
-            <div class="name">姓名</div>
-            <div class="type">租住</div>
-          </van-grid-item>
-          <van-grid-item>
-            <van-image src="https://img.yzcdn.cn/vant/apple-3.jpg" class="border" />
+            <van-image src="https://img.yzcdn.cn/vant/apple-3.jpg" class="border" @click="new_add"/>
             <div style="margin-top: 14px">
               <van-button plain type="primary" size="small" native-type="button" @click="new_add">新增</van-button>
             </div>
           </van-grid-item>
         </van-grid>
-        <div style="padding: 0 12px;">
-          <van-progress :percentage="50" stroke-width="10" />
-        </div>
         <h2 class="block__title">房间信息</h2>
         <van-field
           v-model="form.username"
@@ -91,6 +83,12 @@ export default {
     };
   },
   methods: {
+    imageClick(img){
+      this.$router.push({
+        path: `/person-edit/1`,
+        query: this.$route.query
+      })
+    },
     new_add() {
       this.$emit("add")
     },

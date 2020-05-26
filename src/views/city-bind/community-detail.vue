@@ -103,8 +103,11 @@ export default {
   },
   methods: {
     clickItem(item) {
-      
-      console.log(item)
+      this.$router.push({
+        path: `/house-info/${item.id}`,
+        query: item
+      })
+      // console.log(item)
     },
     load2() {
       const params = {

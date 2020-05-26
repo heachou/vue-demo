@@ -11,6 +11,10 @@ const CityEdit = () => import("../views/city-edit/city-edit")
 const CityBind = () => import("../views/city-bind/city-bind")
 // 人编辑
 const PersonEdit = ()=> import("../views/person-edit/person-edit")
+// 人新增
+const PersonAdd = ()=> import("../views/person-add/person-add")
+// 房间信息
+const HouseInfo = ()=> import("../views/house-info/house-info")
 
 Vue.use(VueRouter)
 
@@ -51,9 +55,19 @@ const routes = [
     component: PersonEdit
   },
   {
+    path: '/person-add',
+    name: 'person-add',
+    component: PersonAdd
+  },
+  {
     path: '/community-add',
     name: 'community-add',
     component: CommunityAdd
+  },
+  {
+    path: '/house-info/:id',
+    name: 'house-info',
+    component: HouseInfo
   },
   {
     path: '/town',
