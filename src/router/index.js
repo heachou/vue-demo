@@ -9,6 +9,8 @@ const PopulationAdd = () => import('../views/population-add/population-add')
 const CommunityAdd = () => import("../views/community-add/community-add")
 const CityEdit = () => import("../views/city-edit/city-edit")
 const CityBind = () => import("../views/city-bind/city-bind")
+// 人编辑
+const PersonEdit = ()=> import("../views/person-edit/person-edit")
 
 Vue.use(VueRouter)
 
@@ -42,6 +44,11 @@ const routes = [
     path: '/city-edit/:id',
     name: 'city-edit',
     component: CityEdit
+  },
+  {
+    path: '/person-edit/:id',
+    name: 'person-edit',
+    component: PersonEdit
   },
   {
     path: '/community-add',

@@ -66,10 +66,16 @@ export default {
       this.getCommunityList()
     },
     clickBind(item) {
-      this.$router.push(`/city-bind/${item.id}`);
+      this.$router.push({
+        path: `/city-bind/${item.id}`,
+        query: item
+      });
     },
     clickEdit(item) {
-      this.$router.push(`/city-edit/${item.id}`);
+      this.$router.push({
+        path: `/city-edit/${item.id}`,
+        query: item
+      });
     },
     click() {
       this.$router.push("/community-add");

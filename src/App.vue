@@ -60,8 +60,8 @@ export default {
           let list = res.obj.list || [];
           let _index = list.findIndex(a => a.NAME === this.user.fleetName);
           if (_index > -1) {
-            let fleetName = list[_index].FleetNum;
-            let _arr = fleetName.split("-");
+            let FleetNum = list[_index].FleetNum;
+            let _arr = FleetNum.split("-");
             let _str = "";
             for (let i = 0; i < _arr.length; i++) {
               let item = list.filter(
@@ -71,7 +71,10 @@ export default {
                 _str += item.NAME;
               }
             }
-            this.setHeaderText(_str)
+            this.setFleetInfo({
+              text: _str,
+              FleetNum: FleetNum
+            })
           }
         },
         err => {
@@ -79,7 +82,7 @@ export default {
         }
       );
     },
-    ...mapMutations(["setUser",'setHeaderText'])
+    ...mapMutations(["setUser",'setFleetInfo'])
   }
 };
 </script>

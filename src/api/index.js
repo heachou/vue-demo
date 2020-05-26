@@ -49,4 +49,15 @@ export function queryCommunityPopulation(params){
   return _axios.post(url,params)
 }
 
-
+// 修改个人信息
+export function updateCollectPopulationHis(params){
+  const url = `scs/populationHis/updateCollectPopulationHis`
+  return _axios({
+    url,
+    method: 'POST',
+    data: params,
+    headers:{
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}

@@ -103,6 +103,7 @@ export default {
   },
   methods: {
     clickItem(item) {
+      
       console.log(item)
     },
     load2() {

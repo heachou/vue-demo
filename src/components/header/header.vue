@@ -2,7 +2,7 @@
   <div class="header">
     <div class="left" @click="clickLeft">
       <van-icon name="arrow-left" class="icon-left" />
-      <span class="text">{{headerText.replace("中国","")}}</span>
+      <span class="text">{{fleetInfo.text && fleetInfo.text.replace("中国","")}}</span>
       <i class="el-icon-aim icon-text-after"></i>
     </div>
     <div class="right">
@@ -20,7 +20,7 @@ import {mapState} from 'vuex'
 export default {
   name: 'top-header',
   computed:{
-    ...mapState(["headerText"])
+    ...mapState(["fleetInfo"])
   },
   methods:{
     clickLeft(){
