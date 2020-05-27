@@ -6,11 +6,9 @@
       <i class="el-icon-aim icon-text-after"></i>
     </div>
     <div class="right">
-      <slot name="right">
         <i class="el-icon-office-building "></i>
-        <van-icon name="home-o" class="icon-build"></van-icon>
-        <span class="text">城镇小区</span>
-      </slot>
+        <van-icon :name="`${rightIcon || 'home-o'}`" class="icon-build"></van-icon>
+        <span class="text">{{rightText || '城镇小区'}}</span>
     </div>
   </div>
 </template>
@@ -19,6 +17,14 @@
 import {mapState} from 'vuex'
 export default {
   name: 'top-header',
+  props:{
+    rightText:{
+      default:''
+    },
+    rightIcon:{
+      default:''
+    }
+  },
   computed:{
     ...mapState(["fleetInfo"])
   },

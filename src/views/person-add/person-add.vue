@@ -28,7 +28,7 @@
           <van-row gutter="20">
             <van-col span="12">
               <van-button block type="primary" native-type="button" v-show="!isEdit" @click="isEdit=true">编辑</van-button>
-              <van-button block type="info" native-type="submit" v-show="isEdit">提交</van-button>
+              <van-button block type="info" native-type="submit" v-show="isEdit">继续添加</van-button>
             </van-col>
             <van-col span="12">
               <van-button block plain type="primary" native-type="button" @click="goBack">返回</van-button>
@@ -52,9 +52,8 @@ export default {
       showPicker: false,
       form: {
         ...this.$route.query,
-        uploader: [{ url: this.$route.query.url }]
       },
-      isEdit: false
+      isEdit: true
     };
   },
   computed: {

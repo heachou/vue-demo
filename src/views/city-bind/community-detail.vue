@@ -107,7 +107,6 @@ export default {
         path: `/house-info/${item.id}`,
         query: item
       })
-      // console.log(item)
     },
     load2() {
       const params = {

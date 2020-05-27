@@ -61,3 +61,10 @@ export function updateCollectPopulationHis(params){
     }
   })
 }
+
+
+// 查询农村房屋
+export function getCollectHouseList(params){
+  const url = `scs/house/getCollectHouseList`
+  return _axios.post(url,params)
+}

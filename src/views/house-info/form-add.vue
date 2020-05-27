@@ -10,10 +10,17 @@
       />
       <van-field
         v-model="form.username"
-        name="居住地址"
-        label="居住地址"
-        placeholder="请选择居住地址"
-        :rules="[{ required: true, message: '请选择居住地址' }]"
+        name="小区名称"
+        label="小区名称"
+        placeholder="请选择小区名称"
+        :rules="[{ required: true, message: '请选择小区名称' }]"
+      />
+      <van-field
+        v-model="form.username"
+        name="房屋信息"
+        label="房屋信息"
+        placeholder="请选择房屋信息"
+        :rules="[{ required: true, message: '请选择小区名称' }]"
       />
       <h2 class="block__title">人员信息</h2>
       <div class="grid-box">
@@ -59,16 +66,6 @@
           placeholder="请选择房屋联系方式"
           :rules="[{ required: true, message: '请选择房屋联系方式' }]"
         />
-      </div>
-      <div style="margin: 30px 16px;">
-        <van-row gutter="20">
-          <van-col span="12">
-            <van-button block type="info" native-type="submit">提交</van-button>
-          </van-col>
-          <van-col span="12">
-            <van-button block plain type="default" native-type="button">取消</van-button>
-          </van-col>
-        </van-row>
       </div>
     </van-form>
   </div>

@@ -19,8 +19,10 @@ export default {
   },
   methods:{
     add(){
-      
-      this.$router.push('/people-add')
+      this.$router.push({
+        path: '/person-add',
+        query: {}
+      })
     }
   },
   components: {
