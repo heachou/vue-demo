@@ -76,3 +76,21 @@ export function getCollectPopulationList(params){
   return _axios.post(url,params)
 }
 
+// 实有人口里新增人口
+export function insertPopulationHis(params){
+  const url = `scs/populationHis/insertPopulationHis`
+  return _axios({
+    url,
+    method: 'POST',
+    data: params,
+    headers:{
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+// 查询房屋里的人口
+export function selectHisByHouseId(params){
+  const url = `scs/populationHis/selectHisByHouseId`
+  return _axios.post(url,params)
+}

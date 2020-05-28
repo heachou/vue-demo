@@ -7,7 +7,7 @@
       <van-list v-model="loading" finished-text="没有更多了" :finished="finished" @load="load">
         <Item v-for="item in list" :key="item.id" :item="item"></Item>
       </van-list>
-      <add-icon @click="click"></add-icon>
+      <!-- <add-icon @click="click"></add-icon> -->
     </div>
     <tabbar></tabbar>
   </div>
@@ -45,7 +45,7 @@ export default {
     },
     load(){
       const params = {
-        fleetId: this.user.FLEET_ID,
+        fleetId: 158893 || this.user.FLEET_ID,
         ...this.form,
         name: this.name
       }

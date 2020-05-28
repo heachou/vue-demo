@@ -11,10 +11,10 @@
 import { Header } from "@/components"
 import FormAdd from './form-add'
 export default {
-  name: "city-bind",
+  name: "house-info",
   data(){
     return {
-      active: 2
+      query: this.$route.query
     }
   },
   methods:{

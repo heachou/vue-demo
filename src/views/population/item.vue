@@ -1,14 +1,14 @@
 <template>
   <div class="item">
     <div class="left">
-      <div class="title">name</div>
+      <div class="title">{{item.name}}</div>
       <div class="id-card">
         <span class="left_text">身份证:</span>
-        <span class="left_num">1234567890098765432</span>
+        <span class="left_num">{{item.idNum}}</span>
       </div>
       <div class="phone">
         <span class="left_text">电话:</span>
-        <span class="left_num">13112344321</span>
+        <span class="left_num">{{item.phoneNum}}</span>
       </div>
     </div>
     <div class="right">
@@ -17,6 +17,19 @@
     </div>
   </div>
 </template>
+
+<script>
+import {} from '@/constants/constants'
+export default {
+  name:'item',
+  props: ['item'],
+  data(){
+    return {
+
+    }
+  }
+}
+</script>
 
 
 <style lang="less" scoped>
@@ -40,7 +53,7 @@
   }
   .left {
     .title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: normal;
       font-stretch: normal;
       line-height: 24px;
@@ -50,6 +63,7 @@
     .id-card {
       margin-top: 4px;
       margin-bottom: 4px;
+      font-size: 14px;
     }
     .left_text {
       font-size: 14px;

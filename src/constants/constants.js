@@ -63,7 +63,23 @@ const nations = [
   { value: 55, label: '珞巴族' },
   { value: 56, label: '基诺族' }]
 
-export { sexMap, regIdCar,nations }
+const ownerTypeMap = {
+  0: '自有房',
+  1: '租客',
+  2: '借住',
+  3: '工作人员',
+  9: '其他'
+}
+
+const houseStatusMap = {
+  '0': '自住',
+  '1': '出租',
+  '2': '空置',
+  "4": "异常"
+}
+
+
+export { sexMap, regIdCar, nations, ownerTypeMap,houseStatusMap }
 
 
 

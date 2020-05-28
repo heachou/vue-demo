@@ -25,13 +25,21 @@
       <h2 class="block__title">人员信息</h2>
       <div class="grid-box">
         <van-grid :border="false" :column-num="3" :gutter="0">
-          <van-grid-item v-for="img in 5" :key="img">
-            <van-image src="https://img.yzcdn.cn/vant/apple-1.jpg" class="border" @click="imageClick(img)"/>
-            <div class="name">姓名</div>
-            <div class="type">租住</div>
+          <van-grid-item v-for="item in list" :key="item.id">
+            <van-image
+              :src="item.url"
+              class="border"
+              width="100%"
+              height="90"
+              @click="imageClick(item)"
+            />
+            <div class="name">{{item.name}}</div>
+            <div class="type">{{ownerTypeMap[item.ownerType]}}</div>
           </van-grid-item>
           <van-grid-item>
-            <van-image src="https://img.yzcdn.cn/vant/apple-3.jpg" class="border" @click="new_add"/>
+            <van-image 
+              width="100%"
+              height="90" loading-icon="photo-o" class="border" @click="new_add" />
             <div style="margin-top: 14px">
               <van-button plain type="primary" size="small" native-type="button" @click="new_add">新增</van-button>
             </div>
@@ -39,28 +47,36 @@
         </van-grid>
         <h2 class="block__title">房间信息</h2>
         <van-field
-          v-model="form.username"
+          v-model="houseStatusMap[form.state]"
+          :readonly="!!houseStatusMap[form.state]"
+          disabled
           name="房屋类型"
           label="房屋类型"
           placeholder="请选择房屋类型"
           :rules="[{ required: true, message: '请选择房屋类型' }]"
         />
         <van-field
-          v-model="form.username"
-          name="房屋姓名"
-          label="房屋姓名"
-          placeholder="请选择房屋姓名"
-          :rules="[{ required: true, message: '请选择房屋姓名' }]"
+          v-model="form.ownerName"
+          :readonly="!!form.ownerName"
+          disabled
+          name="房东姓名"
+          label="房东姓名"
+          placeholder="请选择房东姓名"
+          :rules="[{ required: true, message: '请选择房东姓名' }]"
         />
         <van-field
-          v-model="form.username"
-          name="房屋身份证"
-          label="房屋身份证"
-          placeholder="请选择房屋身份证"
-          :rules="[{ required: true, message: '请选择房屋身份证' }]"
+          v-model="form.ownerIdNum"
+          :readonly="!!form.ownerIdNum"
+          disabled
+          name="房东身份证"
+          label="房东身份证"
+          placeholder="请选择房东身份证"
+          :rules="[{ required: true, message: '请选择房东身份证' }]"
         />
         <van-field
-          v-model="form.username"
+          v-model="form.ownerPhone"
+          :readonly="!!form.ownerPhone"
+          disabled
           name="房屋联系方式"
           label="房屋联系方式"
           placeholder="请选择房屋联系方式"
@@ -72,30 +88,52 @@
 </template>
 
 <script>
+import { houseStatusMap,ownerTypeMap } from "@/constants/constants";
+import { selectHisByHouseId } from "@/api/index";
+
 export default {
   name: "form-add",
   data() {
     return {
-      form: {}
+      form: {
+        ...this.$route.query
+      },
+      houseStatusMap: houseStatusMap,
+      ownerTypeMap:ownerTypeMap,
+      list: []
     };
   },
+  created(){
+    this.selectHisByHouseId()
+  },
   methods: {
-    imageClick(img){
+    selectHisByHouseId(){
+      const params = {
+        houseId: this.$route.params.id
+      }
+      selectHisByHouseId(params).then(res=>{
+        let obj = res.obj
+        this.list = obj.list
+      },err=>{
+        console.log(err)
+      })
+    },
+    imageClick(img) {
       this.$router.push({
         path: `/person-edit/1`,
         query: this.$route.query
-      })
+      });
     },
     new_add() {
-      this.$emit("add")
+      this.$emit("add");
     },
-    onSubmit() {},
+    onSubmit() {}
   }
 };
 </script>
 
 <style scoped lang="less">
-.form-bg{
+.form-bg {
   background: #fff;
   padding-bottom: 20px;
 }
