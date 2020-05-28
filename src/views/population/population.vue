@@ -1,17 +1,12 @@
 <template>
   <div>
-    <top-header>
-      <template #right>
-        <span class="right">
-          <van-icon name="friends" class="icon-build" />
-          <span class="text">实有人口</span>
-        </span>
-      </template>
-    </top-header>
+    <top-header rightText="实有人口" rightIcon="friends-o"></top-header>
     <div class="main">
       <search @search="onSearch"></search>
       <van-divider :style="{ color: '#1989fa', padding: '0',margin:'0' }"></van-divider>
-      <Item v-for="n in 8" :key="n"></Item>
+      <van-list v-model="loading" finished-text="没有更多了" :finished="finished" @load="load">
+        <Item v-for="item in list" :key="item.id" :item="item"></Item>
+      </van-list>
       <add-icon @click="click"></add-icon>
     </div>
     <tabbar></tabbar>
@@ -21,11 +16,52 @@
 <script>
 import { Header, Search, Tabbar,AddIcon } from "@/components"
 import Item from './item'
+import {getCollectPopulationList} from '@/api/index'
+import {mapState} from 'vuex'
 export default {
   name: 'population',
+  computed:{
+    ...mapState(["user"])
+  },
+  data(){
+    return{
+      list: [],
+      form:{
+        pageSize: 10,
+        pageNum:1
+      },
+      loading: false,
+      finished: false,
+      name: ''
+    }
+  },
   methods: {
     onSearch(val) {
-      this.$toast(val)
+      this.loading = false
+      this.list = []
+      this.finished = false
+      this.name = val
+      this.load()
+    },
+    load(){
+      const params = {
+        fleetId: this.user.FLEET_ID,
+        ...this.form,
+        name: this.name
+      }
+      this.loading = true
+      getCollectPopulationList(params).then(res=>{
+        let obj = res.obj
+        if(obj.list.length < this.form.pageSize){
+          this.finished = true
+        }
+        this.list = [...this.list,...obj.list]
+        this.form.pageNum += 1
+        this.loading = false
+      },err=>{
+        this.loading = false
+        console.log(err)
+      })
     },
     click(){
       this.$router.push("/population-add")

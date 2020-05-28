@@ -68,3 +68,11 @@ export function getCollectHouseList(params){
   const url = `scs/house/getCollectHouseList`
   return _axios.post(url,params)
 }
+
+
+// 查询实有人口列表
+export function getCollectPopulationList(params){
+  const url = `scs/population/getCollectPopulationList`
+  return _axios.post(url,params)
+}
+

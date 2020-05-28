@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { Button, Pagination, Search, Toast, Grid, GridItem, Icon, Col, Row, Tab, Tabs,Image as VanImage,
-  Progress,Loading,Calendar,Uploader,List,Sticky,Switch,
+  Progress,Loading,Calendar,Uploader,List,Sticky,Switch,Radio,RadioGroup,
   Panel,Cell, CellGroup,Divider,Tabbar, TabbarItem, Form,Picker,Field,Popup } from 'vant'
 
 Vue.use(Pagination)
@@ -32,3 +32,5 @@ Vue.use(Uploader)
 Vue.use(List)
 Vue.use(Sticky)
 Vue.use(Switch)
+Vue.use(Radio)
+Vue.use(RadioGroup)
