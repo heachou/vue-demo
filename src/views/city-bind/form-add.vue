@@ -2,14 +2,15 @@
   <div class="form-bg">
     <van-form @submit="onSubmit">
       <van-field
-        v-model="form.fleetNum"
-        name="fleetNum"
+        v-model="query.levelName"
+        disabled
         label="所属区域"
         placeholder="请选择所属区域"
         :rules="[{ required: true, message: '请选择所属区域' }]"
       />
       <van-field
-        v-model="form.communityName"
+        v-model="query.communityName"
+        disabled
         name="communityName"
         label="小区名称"
         placeholder="请选择小区名称"
@@ -90,7 +91,9 @@ export default {
   name: "form-add",
   data() {
     return {
-      form: {},
+      form: {
+        file: []
+      },
       showCalendar: false,
       showPop: false,
       keyword: "",
@@ -99,11 +102,17 @@ export default {
       finished: false,
       pageNum: 1,
       pageSize: 10,
-      files: []
+      files: [],
+      query: this.$route.query
     };
   },
   computed: {
     ...mapState(["user"])
+  },
+  created() {
+    if (this.query.photoUrl) {
+      this.form.file.push({ url: this.query.photoUrl });
+    }
   },
   mounted() {
     this.location();
@@ -160,8 +169,8 @@ export default {
         formData.append(key, rest[key]);
       }
 
-      formData.append("fleetNum", "00-001");
-      formData.append("levelName", "安谱");
+      formData.append("fleetNum", this.query.fleetNum);
+      formData.append("levelName", this.query.levelName);
       formData.append("fleetId", this.user.FLEET_ID);
       this.$emit("submit", formData);
     },
@@ -171,7 +180,8 @@ export default {
       };
       queryDoorAddress(params).then(res => {
         try {
-          this.list = res.obj.list.data.records || [];
+          let list = res.obj.list.data.records || [];
+          this.list = [...this.list,...list]
         } catch (error) {
           this.list = [];
         }
