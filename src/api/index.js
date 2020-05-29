@@ -77,6 +77,7 @@ export function getCollectPopulationList(params){
 }
 
 // 实有人口里新增人口
+// 添加房屋里的人口
 export function insertPopulationHis(params){
   const url = `scs/populationHis/insertPopulationHis`
   return _axios({
@@ -92,5 +93,23 @@ export function insertPopulationHis(params){
 // 查询房屋里的人口
 export function selectHisByHouseId(params){
   const url = `scs/populationHis/selectHisByHouseId`
+  return _axios.post(url,params)
+}
+// 修改小区 也是绑定小区
+export function updateCollectCommunity(params){
+  const url = `scs/community/updateCollectCommunity`
+  return _axios({
+    url,
+    method: 'POST',
+    data: params,
+    headers:{
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+// 查询下级区域(切换区域用)
+export function queryFleetByFleetNum(params){
+  const url = `scs/addressBookController/queryFleetByFleetNum`
   return _axios.post(url,params)
 }

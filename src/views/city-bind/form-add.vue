@@ -3,18 +3,16 @@
     <van-form @submit="onSubmit">
       <van-field
         v-model="query.levelName"
-        disabled
+        :readonly="!!query.levelName"
         label="所属区域"
         placeholder="请选择所属区域"
-        :rules="[{ required: true, message: '请选择所属区域' }]"
       />
       <van-field
         v-model="query.communityName"
-        disabled
+        :readonly="!!query.communityName"
         name="communityName"
         label="小区名称"
         placeholder="请选择小区名称"
-        :rules="[{ required: true, message: '请选输入小区名称' }]"
       />
       <van-field
         readonly
@@ -92,7 +90,9 @@ export default {
   data() {
     return {
       form: {
-        file: []
+        file: [],
+        latitude: '',
+        longitude: ''
       },
       showCalendar: false,
       showPop: false,
@@ -119,6 +119,7 @@ export default {
   },
   methods: {
     location() {
+      let _this = this
       var map = new BMap.Map("map");
       var point = new BMap.Point(116.331398, 39.897445);
       map.centerAndZoom(point, 12);
@@ -135,6 +136,14 @@ export default {
         },
         { enableHighAccuracy: true }
       );
+      map.addEventListener("click",function(e){
+        console.log(e.point)
+        _this.form.latitude = e.point.lat
+        _this.form.longitude = e.point.lng
+        let marker = new BMap.Marker(e.point)
+        map.clearOverlays()
+        map.addOverlay(marker)
+      })
     },
     afterRead(file) {
       this.files.push(file.file);
@@ -161,6 +170,7 @@ export default {
     },
     onSubmit(form) {
       let formData = new FormData();
+      console.log(this.files)
       for (let i = 0; i < this.files.length; i++) {
         formData.append("photourl", this.files[i]);
       }
@@ -172,6 +182,8 @@ export default {
       formData.append("fleetNum", this.query.fleetNum);
       formData.append("levelName", this.query.levelName);
       formData.append("fleetId", this.user.FLEET_ID);
+      formData.append("communityName", this.form.communityName);
+      formData.append("id", this.$route.params.id);
       this.$emit("submit", formData);
     },
     onLoad() {

@@ -25,12 +25,12 @@ _axios.interceptors.request.use(
 _axios.interceptors.response.use(response => {
   let data = response.data
   if (data && !data.success) {
-    Toast(data.msg)
+    Toast(data.errorMsg || "出错")
     return Promise.reject(data)
   }
   return response.data
 }, error => {
-  Toast.error((error.response && error.response.data.msg) || '服务异常')
+  Toast.error((error.response && error.response.data.errorMsg) || '服务异常')
   return Promise.reject(error.response)
 })
 

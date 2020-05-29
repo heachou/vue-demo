@@ -1,6 +1,6 @@
 <template>
   <div>
-    <top-header></top-header>
+    <top-header rightText="房屋信息"></top-header>
     <div class="main">
       <form-add @add="add"></form-add>
     </div>
@@ -20,8 +20,8 @@ export default {
   methods:{
     add(){
       this.$router.push({
-        path: '/person-add',
-        query: {}
+        path: `/person-add`,
+        query: this.query
       })
     }
   },

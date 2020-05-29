@@ -1,55 +1,61 @@
 <template>
   <div class="form-bg">
     <van-form @submit="onSubmit">
-      <van-field
-        v-model="form.fleetNum"
-        name="fleetNum"
+      <van-field v-model="form.levelName"
+        readonly
+        @click="fleetShow = true"
+        name="levelName"
         label="所属区域"
         placeholder="请选择所属区域"
-        :rules="[{ required: true, message: '请选择所属区域' }]"
-      />
-      <van-field
-        v-model="form.communityName"
+        :rules="[{ required: true, message: '请选择所属区域' }]" />
+      <van-field v-model="form.communityName"
         name="communityName"
         label="小区名称"
         placeholder="请选择小区名称"
-        :rules="[{ required: true, message: '请选输入小区名称' }]"
-      />
-      <van-field
-        readonly
+        :rules="[{ required: true, message: '请选输入小区名称' }]" />
+      <van-field readonly
         clickable
         name="calendar"
         v-model="form.calendar"
         label="修建时间"
         placeholder="点击选择修建时间"
-        @click="showCalendar = true"
-      />
-      <van-field name="file" label="小区照片">
+        @click="showCalendar = true" />
+      <van-field name="file"
+        label="小区照片">
         <template #input>
-          <van-uploader v-model="form.file" :after-read="afterRead" @delete="deleteFile" />
+          <van-uploader v-model="form.file"
+            :after-read="afterRead"
+            @delete="deleteFile" />
         </template>
       </van-field>
-      <van-field
-        readonly
+      <van-field readonly
         clickable
         v-model="form.address"
         label="绑定地址"
         placeholder="点击选择地址"
-        @click="showPop = true"
-      />
+        @click="showPop = true" />
       <div style="margin: 30px 16px;">
         <van-row gutter="20">
           <van-col span="12">
-            <van-button block type="info" native-type="submit">提交</van-button>
+            <van-button block
+              type="info"
+              native-type="submit">提交</van-button>
           </van-col>
           <van-col span="12">
-            <van-button block plain type="default" native-type="button">取消</van-button>
+            <van-button block
+              plain
+              type="default"
+              native-type="button">取消</van-button>
           </van-col>
         </van-row>
       </div>
     </van-form>
-    <van-calendar v-model="showCalendar" @confirm="onConfirm" />
-    <van-popup closeable v-model="showPop" position="bottom" :style="{ height: '80%' }">
+    <van-calendar v-model="showCalendar"
+      @confirm="onConfirm" />
+    <van-popup closeable
+      v-model="showPop"
+      position="bottom"
+      :style="{ height: '80%' }">
       <div class="pop-box">
         <h3 class="title">温馨提示:</h3>
         <div class="tips">
@@ -60,30 +66,32 @@
           </p>
         </div>
         <div>
-          <van-search v-model="keyword" placeholder="青羊区" @search="search" />
-          <van-list
-            v-model="loading"
+          <van-search v-model="keyword"
+            placeholder="青羊区"
+            @search="search" />
+          <van-list v-model="loading"
             :finished="finished"
             finished-text="没有更多了"
             @load="onLoad"
-            :immediate-check="false"
-          >
-            <van-cell
-              v-for="item in list"
+            :immediate-check="false">
+            <van-cell v-for="item in list"
               :key="item.dmid"
               :title="item.dmmc"
-              @click="selectThis(item)"
-            />
+              @click="selectThis(item)" />
           </van-list>
         </div>
       </div>
     </van-popup>
+    <!-- <fleet-choose :show="true" :initFleetNum="fleetInfo.FleetNum"></fleet-choose> -->
+    <fleet-choose :show="true" initFleetNum="00-025-002-001-003"></fleet-choose>
+    
   </div>
 </template>
-
 <script>
 import { queryDoorAddress } from "@/api/index";
-import {mapState} from "vuex"
+import { mapState } from "vuex"
+import { FleetChoose } from '@/components'
+
 export default {
   name: "form-add",
   data() {
@@ -97,11 +105,12 @@ export default {
       finished: false,
       pageNum: 1,
       pageSize: 10,
-      files: []
+      files: [],
+
     };
   },
-  computed:{
-    ...mapState(["user"])
+  computed: {
+    ...mapState(["user","fleetInfo"])
   },
   methods: {
     afterRead(file) {
@@ -132,11 +141,11 @@ export default {
       for (let i = 0; i < this.files.length; i++) {
         formData.append("file", this.files[i]);
       }
-      const { file,fleetNum, ...rest } = this.form;
+      const { file, fleetNum, ...rest } = this.form;
       for (let key in rest) {
         formData.append(key, rest[key]);
       }
-      
+
       formData.append("fleetNum", "00-001");
       formData.append("levelName", "安谱");
       formData.append("fleetId", this.user.FLEET_ID);
@@ -156,6 +165,9 @@ export default {
         this.finished = true;
       });
     }
+  },
+  components: {
+    FleetChoose
   }
 };
 </script>

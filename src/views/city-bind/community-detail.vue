@@ -1,36 +1,62 @@
 <template>
   <div>
-    <van-field v-model="name" label="所属区域" placeholder="请选择所属区域" :rules="[{ required: true, message: '请选择所属区域' }]" />
-    <van-field v-model="communityName" name="communityName" label="小区名称" placeholder="请选择小区名称" :rules="[{ required: true, message: '请选输入小区名称' }]" />
+    <van-field
+        v-model="query.levelName"
+        :readonly="!!query.levelName"
+        label="所属区域"
+        placeholder="请选择所属区域"
+      />
+      <van-field
+        v-model="query.communityName"
+        :readonly="!!query.communityName"
+        name="communityName"
+        label="小区名称"
+        placeholder="请选择小区名称"
+      />
     <h2 class="title-block">房间信息</h2>
     <van-tabs v-model="active">
       <van-tab title="视图">
         <div class="legend">
           <van-row>
-            <van-col span="6" class="item">
-              <span class="block" style="background:#37c9f1"></span>
+            <van-col span="6"
+              class="item">
+              <span class="block"
+                style="background:#37c9f1"></span>
               <span>自住</span>
             </van-col>
-            <van-col span="6" class="item">
-              <span class="block" style="background:#f2a587"></span>
+            <van-col span="6"
+              class="item">
+              <span class="block"
+                style="background:#f2a587"></span>
               <span>出租</span>
             </van-col>
-            <van-col span="6" class="item">
-              <span class="block" style="background:#e6e6e6"></span>
+            <van-col span="6"
+              class="item">
+              <span class="block"
+                style="background:#e6e6e6"></span>
               <span>空置</span>
             </van-col>
-            <van-col span="6" class="item">
-              <span class="block" style="background:#fb8b8f"></span>
+            <van-col span="6"
+              class="item">
+              <span class="block"
+                style="background:#fb8b8f"></span>
               <span>异常</span>
             </van-col>
           </van-row>
           <van-divider></van-divider>
-          <van-list v-model="loading2" :finished="finished2" finished-text="没有更多了" @load="load2">
-            <van-cell :title="`${item.address}${item.unit}单元${item.building}栋 F${item.floor}`" v-for="item in list2" :key="item.id">
+          <van-list v-model="loading2"
+            :finished="finished2"
+            finished-text="没有更多了"
+            @load="load2">
+            <van-cell :title="`${item.address}${item.unit}单元${item.building}栋 F${item.floor}`"
+              v-for="item in list2"
+              :key="item.id">
               <template #label>
                 <van-row>
-                  <van-col span="6" @click="clickItem(item)">
-                    <span class="room-info" :style="`background:${stateMap[item.state] || '#e6e6e6'}`">{{item.floor}}{{item.room}}</span>
+                  <van-col span="6"
+                    @click="clickItem(item)">
+                    <span class="room-info"
+                      :style="`background:${stateMap[item.state] || '#e6e6e6'}`">{{item.floor}}{{item.room}}</span>
                   </van-col>
                 </van-row>
               </template>
@@ -39,15 +65,23 @@
         </div>
       </van-tab>
       <van-tab title="列表">
-        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="load">
-          <van-cell :title="`${item.address}${item.unit}单元 F${item.floor}`" desc="描述信息" v-for="item in list" :key="item.id" @click="clickItem(item)">
+        <van-list v-model="loading"
+          :finished="finished"
+          finished-text="没有更多了"
+          @load="load">
+          <van-cell :title="`${item.address}${item.unit}单元 F${item.floor}`"
+            desc="描述信息"
+            v-for="item in list"
+            :key="item.id"
+            @click="clickItem(item)">
             <template #label>
               <div class="room-label">
                 <van-row>
                   <van-col span="4">{{item.floor}}{{item.room}}</van-col>
                   <van-col span="6">居住: {{item.registerPopNum}}人</van-col>
                   <van-col span="10">房主: {{item.ownerPhone}}</van-col>
-                  <van-col span="4" :style="`color:${stateMap[item.state] || '#e6e6e6'}`">{{status[item.state]}}</van-col>
+                  <van-col span="4"
+                    :style="`color:${stateMap[item.state] || '#e6e6e6'}`">{{status[item.state]}}</van-col>
                 </van-row>
               </div>
             </template>
@@ -75,6 +109,7 @@ export default {
   name: 'community-detail',
   data() {
     return {
+      query: this.$route.query,
       stateMap: stateMap,
       status: status,
       loading: false,
@@ -105,7 +140,10 @@ export default {
     clickItem(item) {
       this.$router.push({
         path: `/house-info/${item.id}`,
-        query: item
+        query: {
+          ...item,
+          ...this.query
+        }
       })
     },
     load2() {
@@ -117,7 +155,7 @@ export default {
       selectHouseByCommunity(params).then(res => {
         let obj = res.obj
         this.loading2 = false
-        this.list2 = obj.list
+        this.list2 = [...this.list2,...obj.list]
         this.form2.pageNum += 1
         if (obj.list.length < this.form2.pageSize) {
           this.finished2 = true
@@ -136,7 +174,7 @@ export default {
       selectHouseByCommunity(params).then(res => {
         let obj = res.obj
         this.loading = false
-        this.list = obj.list
+        this.list = [...this.list,...obj.list]
         this.form.pageNum += 1
         if (obj.list.length < this.form.pageSize) {
           this.finished = true

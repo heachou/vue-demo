@@ -2,25 +2,24 @@
   <div class="form-bg">
     <van-form @submit="onSubmit">
       <van-field
-        v-model="form.username"
-        name="所属区域"
+        v-model="form.levelName"
+        :readonly="!!form.levelName"
         label="所属区域"
         placeholder="请选择所属区域"
-        :rules="[{ required: true, message: '请选择所属区域' }]"
       />
       <van-field
-        v-model="form.username"
-        name="小区名称"
+        v-model="form.communityName"
+        :readonly="!!form.communityName"
+        name="communityName"
         label="小区名称"
         placeholder="请选择小区名称"
-        :rules="[{ required: true, message: '请选择小区名称' }]"
       />
       <van-field
-        v-model="form.username"
+        v-model="form.address"
+        :readonly="!!form.address"
         name="房屋信息"
         label="房屋信息"
-        placeholder="请选择房屋信息"
-        :rules="[{ required: true, message: '请选择小区名称' }]"
+        placeholder="请输入房屋信息"
       />
       <h2 class="block__title">人员信息</h2>
       <div class="grid-box">
@@ -49,7 +48,6 @@
         <van-field
           v-model="houseStatusMap[form.state]"
           :readonly="!!houseStatusMap[form.state]"
-          disabled
           name="房屋类型"
           label="房屋类型"
           placeholder="请选择房屋类型"
@@ -58,7 +56,6 @@
         <van-field
           v-model="form.ownerName"
           :readonly="!!form.ownerName"
-          disabled
           name="房东姓名"
           label="房东姓名"
           placeholder="请选择房东姓名"
@@ -67,7 +64,6 @@
         <van-field
           v-model="form.ownerIdNum"
           :readonly="!!form.ownerIdNum"
-          disabled
           name="房东身份证"
           label="房东身份证"
           placeholder="请选择房东身份证"
@@ -76,7 +72,6 @@
         <van-field
           v-model="form.ownerPhone"
           :readonly="!!form.ownerPhone"
-          disabled
           name="房屋联系方式"
           label="房屋联系方式"
           placeholder="请选择房屋联系方式"
@@ -118,10 +113,13 @@ export default {
         console.log(err)
       })
     },
-    imageClick(img) {
+    imageClick(item) {
       this.$router.push({
-        path: `/person-edit/1`,
-        query: this.$route.query
+        path: `/person-edit/${item.id}`,
+        query: {
+          ...this.$route.query,
+          ...item
+        }
       });
     },
     new_add() {

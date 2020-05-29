@@ -5,7 +5,7 @@
       <van-tabs v-model="active" color="#2ac9f3">
         <van-tab title="小区绑定">
           <div>
-            <form-add @add="add"></form-add>
+            <form-add @submit="submit"></form-add>
           </div>
         </van-tab>
         <van-tab title="小区详情">
@@ -28,6 +28,7 @@ import FormAdd from './form-add'
 import CommunityDetail from './community-detail'
 import BuildDetail from './build-detail'
 import CommunityPerson from './community-person'
+import { updateCollectCommunity } from '@/api/index'
 
 export default {
   name: "city-bind",
@@ -37,8 +38,12 @@ export default {
     }
   },
   methods:{
-    add(){
-      
+    submit(params){
+      updateCollectCommunity(params).then(res=>{
+        console.log(res)
+      },err=>{
+        console.log(err)
+      })
     }
   },
   components: {
