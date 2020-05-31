@@ -1,6 +1,6 @@
 <template>
   <div>
-    <top-header rightText="农村房屋"></top-header>
+    <top-header rightText="农村房屋" rightIcon="hotel-o"></top-header>
     <search @search="search"></search>
     <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="load">
       <div class="item" v-for="item in list" :key="item.id">
@@ -25,11 +25,12 @@
         </div>
       </div>
     </van-list>
+    <add-icon @click="townBind"></add-icon>
   </div>
 </template>
 
 <script>
-import { Header, Search } from '@/components'
+import { Header, Search,AddIcon } from '@/components'
 import { getCollectHouseList } from '@/api/index'
 import { mapState } from 'vuex'
 
@@ -52,6 +53,11 @@ export default {
     ...mapState(["user","ownerTypeMap"])
   },
   methods: {
+    townBind(){
+      this.$router.push({
+        path: '/town-bind'
+      })
+    },
     search(val) {
       this.form.pageNum = 1
       this.loading = false
@@ -87,7 +93,8 @@ export default {
   },
   components: {
     TopHeader: Header,
-    Search
+    Search,
+    AddIcon
   }
 }
 </script>

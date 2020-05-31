@@ -7,7 +7,7 @@
       <van-list v-model="loading" finished-text="没有更多了" :finished="finished" @load="load">
         <Item v-for="item in list" :key="item.id" :item="item"></Item>
       </van-list>
-      <!-- <add-icon @click="click"></add-icon> -->
+      <add-icon @click="click"></add-icon>
     </div>
     <tabbar></tabbar>
   </div>
@@ -41,6 +41,7 @@ export default {
       this.list = []
       this.finished = false
       this.name = val
+      this.form.pageNum = 1
       this.load()
     },
     load(){

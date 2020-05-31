@@ -137,7 +137,6 @@ export default {
         { enableHighAccuracy: true }
       );
       map.addEventListener("click",function(e){
-        console.log(e.point)
         _this.form.latitude = e.point.lat
         _this.form.longitude = e.point.lng
         let marker = new BMap.Marker(e.point)
@@ -170,9 +169,8 @@ export default {
     },
     onSubmit(form) {
       let formData = new FormData();
-      console.log(this.files)
       for (let i = 0; i < this.files.length; i++) {
-        formData.append("photourl", this.files[i]);
+        formData.append("file", this.files[i]);
       }
       const { file, fleetNum, ...rest } = this.form;
       for (let key in rest) {

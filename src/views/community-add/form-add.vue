@@ -1,7 +1,9 @@
 <template>
   <div class="form-bg">
     <van-form @submit="onSubmit">
-      <van-field v-model="form.levelName"
+      <van-field 
+        clickable
+        v-model="form.levelName"
         readonly
         @click="fleetShow = true"
         name="levelName"
@@ -13,13 +15,13 @@
         label="小区名称"
         placeholder="请选择小区名称"
         :rules="[{ required: true, message: '请选输入小区名称' }]" />
-      <van-field readonly
+      <!-- <van-field readonly
         clickable
         name="calendar"
         v-model="form.calendar"
         label="修建时间"
         placeholder="点击选择修建时间"
-        @click="showCalendar = true" />
+        @click="showCalendar = true" /> -->
       <van-field name="file"
         label="小区照片">
         <template #input>
@@ -51,7 +53,7 @@
       </div>
     </van-form>
     <van-calendar v-model="showCalendar"
-      @confirm="onConfirm" />
+      @confirm="onCalenderConfirm" />
     <van-popup closeable
       v-model="showPop"
       position="bottom"
@@ -82,9 +84,9 @@
         </div>
       </div>
     </van-popup>
-    <!-- <fleet-choose :show="true" :initFleetNum="fleetInfo.FleetNum"></fleet-choose> -->
-    <fleet-choose :show="true" initFleetNum="00-025-002-001-003"></fleet-choose>
-    
+    <!-- 00-025-002-001-003 00-025-002-001-003 -->
+    <fleet-choose :show="fleetShow" :initFleetNum="`00-025-002-001-003`" @submit="onfleetChooseConfirm" @cancel="fleetShow = false"></fleet-choose>
+    <!-- "00-025-002-001-003-001-001-001" -->
   </div>
 </template>
 <script>
@@ -99,6 +101,7 @@ export default {
       form: {},
       showCalendar: false,
       showPop: false,
+      fleetShow: false,
       keyword: "",
       list: [],
       loading: false,
@@ -106,13 +109,20 @@ export default {
       pageNum: 1,
       pageSize: 10,
       files: [],
-
     };
   },
   computed: {
     ...mapState(["user","fleetInfo"])
   },
   methods: {
+    onfleetChooseConfirm(params){
+      console.log(params)
+      this.form = {
+        ...this.form,
+        ...params
+      }
+      this.fleetShow = false
+    },
     afterRead(file) {
       this.files.push(file.file);
     },
@@ -131,7 +141,7 @@ export default {
       this.pageNum = 1;
       this.onLoad();
     },
-    onConfirm(date) {
+    onCalenderConfirm(date) {
       this.form.calendar = `${date.getFullYear()}-${date.getMonth() +
         1}-${date.getDate()}`;
       this.showCalendar = false;
@@ -141,13 +151,12 @@ export default {
       for (let i = 0; i < this.files.length; i++) {
         formData.append("file", this.files[i]);
       }
-      const { file, fleetNum, ...rest } = this.form;
+      const { file,levelName, ...rest } = this.form;
       for (let key in rest) {
         formData.append(key, rest[key]);
       }
 
-      formData.append("fleetNum", "00-001");
-      formData.append("levelName", "安谱");
+      formData.append("levelName", this.fleetInfo.text + this.form.levelName);
       formData.append("fleetId", this.user.FLEET_ID);
       this.$emit("submit", formData);
     },

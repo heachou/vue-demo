@@ -1,7 +1,7 @@
 <template>
-  <van-tabbar v-model="active">
-    <van-tabbar-item icon="home-o">首页</van-tabbar-item>
-    <van-tabbar-item icon="user-o">账号</van-tabbar-item>
+  <van-tabbar route>
+    <van-tabbar-item icon="home-o" to="/">首页</van-tabbar-item>
+    <van-tabbar-item icon="user-o" >账号</van-tabbar-item>
   </van-tabbar>
 </template>
 

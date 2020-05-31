@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="right">
-      <van-button size="small" type="primary" plain>修改</van-button>
+      <van-button size="small" type="primary" plain @click="edit(item)">修改</van-button>
       <div class="status primary">自住</div>
     </div>
   </div>
@@ -26,6 +26,14 @@ export default {
   data(){
     return {
 
+    }
+  },
+  methods:{
+    edit(item){
+      this.$router.push({
+        path:  `/population-edit/${item.id}`,
+        query: item
+      })
     }
   }
 }

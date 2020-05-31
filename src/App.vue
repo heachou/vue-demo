@@ -13,12 +13,11 @@ export default {
   name: "app",
   data() {
     return {
-      number: this.$route.query.number
+      number: this.$route.query.number || window.sessionStorage.getItem("number")
     };
   },
-  created() {
-    
-    // this.getDetailInfo();
+  mounted() {
+    this.getDetailInfo(this.number);
   },
   watch:{
     '$route'(to,from){
@@ -26,8 +25,6 @@ export default {
         this.getDetailInfo(to.query.number)
       }
     }
-  },
-  mounted(){
   },
   computed: {
     ...mapState(["user"])
@@ -38,6 +35,7 @@ export default {
       if (!number) {
         return this.$toast.fail("未获取到number");
       }
+      window.sessionStorage.setItem('number',number)
       const params = {
         number
       };

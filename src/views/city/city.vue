@@ -73,7 +73,7 @@ export default {
     },
     clickEdit(item) {
       this.$router.push({
-        path: `/city-edit/${item.id}`,
+        path: `/city-bind/${item.id}`,
         query: item
       });
     },

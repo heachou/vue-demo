@@ -5,7 +5,9 @@ const Index = () => import('../views/index/index')
 const Population = () => import('../views/population/population')
 const City = () => import('../views/city/city')
 const Town = () => import('../views/town/town')
+const TownBind = () => import('../views/town-bind/town-bind')
 const PopulationAdd = () => import('../views/population-add/population-add')
+const PopulationEdit = () => import('../views/population-add/population-add')
 const CommunityAdd = () => import("../views/community-add/community-add")
 const CityEdit = () => import("../views/city-edit/city-edit")
 const CityBind = () => import("../views/city-bind/city-bind")
@@ -33,6 +35,11 @@ const routes = [
     path: '/population-add',
     name: 'population-add',
     component: PopulationAdd
+  },
+  {
+    path: '/population-edit/:id',
+    name: 'population-edit',
+    component: PopulationEdit
   },
   {
     path: '/city',
@@ -73,6 +80,11 @@ const routes = [
     path: '/town',
     name: 'town',
     component: Town
+  },
+  {
+    path: '/town-bind',
+    name: 'town-bind',
+    component: TownBind
   }
 ]
 

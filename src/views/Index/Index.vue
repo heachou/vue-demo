@@ -134,7 +134,8 @@ export default {
       }
     }
   },
-  created() {
+  mounted() {
+    this.getQueryBasicInfo()
   },
   methods: {
     getQueryBasicInfo() {

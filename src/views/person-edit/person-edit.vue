@@ -28,8 +28,8 @@
           <template #input>
             <van-radio-group v-model="form.sex"
               direction="horizontal">
-              <van-radio name="0">男</van-radio>
-              <van-radio name="1">女</van-radio>
+              <van-radio :name="0">男</van-radio>
+              <van-radio :name="1">女</van-radio>
             </van-radio-group>
           </template>
         </van-field>
@@ -44,7 +44,7 @@
           name="IdNum"
           label="身份证"
           placeholder="请输入身份证"
-          :rules="[{ required: true, message: '请输入身份证' }]" />
+          :rules="[{ required: true,  pattern: regIdCar,message: '请输入正确的身份证' }]" />
         <van-field :readonly="!isEdit"
           v-model="form.phoneNum"
           name="phoneNum"
@@ -141,7 +141,8 @@ export default {
         ...this.$route.query,
         uploader: [{ url: this.$route.query.url }]
       },
-      isEdit: true
+      isEdit: true,
+      regIdCar:regIdCar
     };
   },
   computed: {
