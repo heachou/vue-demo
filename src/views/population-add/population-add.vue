@@ -26,8 +26,8 @@
         <van-field name="radio" :rules="[{ required: true, message: '请选择性别' }]" label="性别">
           <template #input>
             <van-radio-group v-model="form.sex" direction="horizontal">
-              <van-radio :name="0">男</van-radio>
-              <van-radio :name="1">女</van-radio>
+              <van-radio name="0">男</van-radio>
+              <van-radio name="1">女</van-radio>
             </van-radio-group>
           </template>
         </van-field>
@@ -171,7 +171,8 @@ export default {
       form: {
         file: [],
         houseId: 0,
-        ...this.$route.query
+        ...this.$route.query,
+        sex: `${this.$route.query.sex}`
       },
       showPop: false,
       keyword: "",
@@ -261,7 +262,9 @@ export default {
       ];
       let formData = new FormData();
       submitKeys.forEach(key => {
-        formData.append(key, rest[key]);
+        if(rest[key] !== undefined){
+          formData.append(key, rest[key]);
+        }
       });
       if (file[0].file) {
         formData.append("file", file[0].file);
@@ -269,9 +272,11 @@ export default {
       formData.append("fleetId", this.user.FLEET_ID);
       if (this.$route.query.id) {
         // 说明是编辑接口
+        formData.append("id", this.$route.query.id);
         updateCollectPopulationHis(formData).then(
           res => {
             this.$toast("操作成功");
+            this.$router.go(-1)
           },
           err => {
             console.log(err);

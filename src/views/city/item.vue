@@ -2,12 +2,12 @@
   <div class="item">
     <div class="item-top">
       <div class="item-top-l">
-        <img :src="item.photoUrl" alt="image" width="122" />
+        <img :src="item.photoUrl" alt="image" width="122" @click="toDetail"/>
       </div>
       <div class="item-top-r">
         <div class="box-top">
           <div class="box-top-flex">
-            <p class="title">{{item.communityName}}</p>
+            <p class="title" @click="toDetail">{{item.communityName}}</p>
             <van-button v-if="item.bind === 1" plain type="primary" size="small" @click="clickEdit">修改</van-button>
             <van-button v-if="item.bind === 0" plain type="info" size="small" @click="clickBind">绑定</van-button>
           </div>
@@ -19,7 +19,7 @@
         </div>
       </div>
     </div>
-    <div class="item-bottom">
+    <div class="item-bottom" @click="toDetail">
       <div class="flex1">
         <span class="color-yellow width120">楼栋:{{item.buildings}}</span>
         <span class="color-purple">房屋:</span>
@@ -51,6 +51,12 @@ export default {
     },
     clickEdit(){
       this.$emit('clickEdit',this.item)
+    },
+    toDetail(){
+      this.$emit('toDetail',{
+        ...this.item,
+        tab: 1
+      })
     }
   },
 };

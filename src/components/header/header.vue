@@ -1,8 +1,8 @@
 <template>
   <div class="header">
-    <div class="left" @click="clickLeft">
-      <van-icon name="arrow-left" class="icon-left" />
-      <span class="text">{{fleetInfo.text && fleetInfo.text.replace("中国","")}}</span>
+    <div class="left" >
+      <van-icon name="arrow-left" class="icon-left" @click="clickLeft"/>
+      <span class="text" @click="toggleFleet">{{fleetInfo.text && fleetInfo.text.replace("中国","")}}</span>
       <i class="el-icon-aim icon-text-after"></i>
     </div>
     <div class="right">
@@ -10,11 +10,14 @@
         <van-icon :name="`${rightIcon || 'home-o'}`" class="icon-build"></van-icon>
         <span class="text">{{rightText || '城镇小区'}}</span>
     </div>
+    <fleet-choose :show="fleetShow" :initFleetNum="fleetInfo.FleetNum" @submit="onfleetChooseConfirm" @cancel="fleetShow = false"></fleet-choose>
   </div>
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapState,} from 'vuex'
+import { FleetChoose } from '@/components'
+
 export default {
   name: 'top-header',
   props:{
@@ -25,13 +28,20 @@ export default {
       default:''
     }
   },
+  
   computed:{
     ...mapState(["fleetInfo"])
   },
   methods:{
     clickLeft(){
       this.$router.go(-1)
+    },
+    toggleFleet(){
+
     }
+  },
+  components:{
+    FleetChoose
   }
 }
 </script>

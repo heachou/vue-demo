@@ -34,7 +34,7 @@ export default {
   name: "city-bind",
   data(){
     return {
-      active: 0
+      active: this.$route.query.tab || 0
     }
   },
   methods:{

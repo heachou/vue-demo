@@ -14,7 +14,7 @@
         label="小区名称"
         placeholder="请选择小区名称"
       />
-      <van-field
+      <!-- <van-field
         readonly
         clickable
         name="calendar"
@@ -22,7 +22,7 @@
         label="修建时间"
         placeholder="点击选择修建时间"
         @click="showCalendar = true"
-      />
+      /> -->
       <van-field name="file" label="小区照片">
         <template #input>
           <van-uploader v-model="form.file" :after-read="afterRead" @delete="deleteFile" />
@@ -44,7 +44,7 @@
             <van-button block type="info" native-type="submit">提交</van-button>
           </van-col>
           <van-col span="12">
-            <van-button block plain type="default" native-type="button">取消</van-button>
+            <van-button block plain type="default" native-type="button" @click="$router.go(-1)">取消</van-button>
           </van-col>
         </van-row>
       </div>
@@ -180,7 +180,7 @@ export default {
       formData.append("fleetNum", this.query.fleetNum);
       formData.append("levelName", this.query.levelName);
       formData.append("fleetId", this.user.FLEET_ID);
-      formData.append("communityName", this.form.communityName);
+      formData.append("communityName", this.query.communityName);
       formData.append("id", this.$route.params.id);
       this.$emit("submit", formData);
     },

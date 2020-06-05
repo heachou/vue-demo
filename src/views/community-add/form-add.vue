@@ -85,7 +85,7 @@
       </div>
     </van-popup>
     <!-- 00-025-002-001-003 00-025-002-001-003 -->
-    <fleet-choose :show="fleetShow" :initFleetNum="`00-025-002-001-003`" @submit="onfleetChooseConfirm" @cancel="fleetShow = false"></fleet-choose>
+    <fleet-choose :show="fleetShow" :initFleetNum="fleetInfo.FleetNum" @submit="onfleetChooseConfirm" @cancel="fleetShow = false"></fleet-choose>
     <!-- "00-025-002-001-003-001-001-001" -->
   </div>
 </template>

@@ -16,8 +16,11 @@ export default {
       number: this.$route.query.number || window.sessionStorage.getItem("number")
     };
   },
+  created(){
+    // alert(window.location.href)
+  },
   mounted() {
-    this.getDetailInfo(this.number);
+    // this.getDetailInfo(this.number);
   },
   watch:{
     '$route'(to,from){

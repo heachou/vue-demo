@@ -6,7 +6,7 @@
       <van-divider :style="{ color: '#1989fa', padding: '0',margin:'0' }"></van-divider>
       <van-loading v-if="loading"/>
 
-      <item v-for="item in list" :key="item.id" :item="item" @clickBind="clickBind" @clickEdit="clickEdit"></item>
+      <item v-for="item in list" :key="item.id" :item="item" @toDetail="toDetail" @clickBind="clickBind" @clickEdit="clickEdit"></item>
       <div class="pagniation-box">
         <van-pagination v-model="form.pageNum" :total-items="total" :items-per-page="form.pageSize" mode="simple" @change="changePagination"/>
       </div>
@@ -42,6 +42,12 @@ export default {
     this.getCommunityList();
   },
   methods: {
+    toDetail(item){
+      this.$router.push({
+        path: `/city-bind/${item.id}`,
+        query: item
+      })
+    },
     changePagination(index){
       this.getCommunityList()
     },
