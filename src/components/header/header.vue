@@ -10,13 +10,15 @@
         <van-icon :name="`${rightIcon || 'home-o'}`" class="icon-build"></van-icon>
         <span class="text">{{rightText || '城镇小区'}}</span>
     </div>
-    <fleet-choose :show="fleetShow" :initFleetNum="fleetInfo.FleetNum" @submit="onfleetChooseConfirm" @cancel="fleetShow = false"></fleet-choose>
+    <!-- 00-025-002-001-003 00-025-002-001-003 -->
+    <!-- fleetInfo.FleetNum -->
+    <fleet-choose :show="fleetShow" :initFleetNum="`00-025-002-001-003`" @submit="onfleetChooseConfirm" @cancel="fleetShow = false"></fleet-choose>
   </div>
 </template>
 
 <script>
-import {mapState,} from 'vuex'
-import { FleetChoose } from '@/components'
+import {mapState,mapMutations} from 'vuex'
+import  FleetChoose from '../fleetChoose/fleetChoose'
 
 export default {
   name: 'top-header',
@@ -28,17 +30,35 @@ export default {
       default:''
     }
   },
-  
+  data(){
+    return {
+      fleetShow: false
+    }
+  },
   computed:{
-    ...mapState(["fleetInfo"])
+    ...mapState(["user" ,"fleetInfo"])
   },
   methods:{
     clickLeft(){
       this.$router.go(-1)
     },
     toggleFleet(){
-
-    }
+      this.fleetShow = true
+    },
+    onfleetChooseConfirm(params){
+      console.log(params)
+      this.fleetShow = false
+      this.setFleetInfo({
+        FleetNum: params.fleetNum,
+        text: params.levelName
+      })
+      const user = {
+        ...this.user,
+        FLEET_ID:params.fleetId
+      }
+      this.setUser(user)
+    },
+    ...mapMutations(["setUser","setFleetInfo"])
   },
   components:{
     FleetChoose

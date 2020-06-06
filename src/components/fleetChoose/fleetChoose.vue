@@ -34,7 +34,7 @@
 <script>
 import { queryFleetByFleetNum } from "@/api/index";
 export default {
-  name: "fleets-choose",
+  name: "fleet-choose",
   props: {
     show: {
       default: false
@@ -49,34 +49,36 @@ export default {
       items: []
     };
   },
-  computed:{
-    disable(){
-      let len = this.items.length
-      let lastItem = this.items[len - 1]
-      return !!(lastItem && !lastItem.activeFleetNum)
+  computed: {
+    disable() {
+      let len = this.items.length;
+      let lastItem = this.items[len - 1];
+      return !!(lastItem && !lastItem.activeFleetNum);
     }
   },
   created() {
     this.getFleetNum(this.initFleetNum);
   },
   methods: {
-    cancel(){
-      this.$emit('cancel')
+    cancel() {
+      this.$emit("cancel");
     },
-    submit(){
-      let len = this.items.length
-      let lastItem = this.items[len - 1]
-      if(lastItem && !lastItem.activeFleetNum){
-        return this.$toast("请选择到最后一级")
+    submit() {
+      let len = this.items.length;
+      let lastItem = this.items[len - 1];
+      if (lastItem && !lastItem.activeFleetNum) {
+        return this.$toast("请选择到最后一级");
       }
-      let levelName = ""
+      let levelName = "";
       this.items.forEach(item => {
-        levelName += item.activeFleetName
+        levelName += item.activeFleetName;
       });
-      this.$emit('submit',{
-        fleetNum: this.items[this.items.length-1].activeFleetNum,
-        levelName
-      })
+      console.log(lastItem)
+      this.$emit("submit", {
+        fleetNum: lastItem.activeFleetNum,
+        levelName,
+        fleetId: lastItem.activeFleetId
+      });
     },
     getFleetNum(fleetNum, level = 0) {
       if (!fleetNum) {
@@ -94,6 +96,7 @@ export default {
             this.items.push({
               activeFleetNum: "",
               activeFleetName: "",
+              activeFleetId: "",
               arr: res.obj
             });
           }
@@ -109,6 +112,7 @@ export default {
     clickItem(item, parentItem, index) {
       parentItem.activeFleetNum = item.FleetNum;
       parentItem.activeFleetName = item.NAME;
+      parentItem.activeFleetId = item.FLEET_ID
       console.log(item);
       this.getFleetNum(item.FleetNum, index);
     }
